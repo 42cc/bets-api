@@ -1,3 +1,5 @@
+'''Monitors all active bets and notifies when one of them is executed'''
+
 import sys
 import bets
 import gevent
