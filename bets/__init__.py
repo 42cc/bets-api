@@ -1,3 +1,5 @@
+__version__ = '0.0.1'
+
 import re
 import json
 import datetime as dt
