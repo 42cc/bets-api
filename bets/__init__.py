@@ -12,6 +12,18 @@ class ApiError(Exception):
 
 
 class BetsApi(object):
+    '''API wrapper for bet engine.
+
+    To use this you need to generate token (through admin UI) and then:
+
+        api = bets.BetsApi('<your token>')
+        api.get_active_bets()
+
+    All entities (bets, stakes, etc) are represented as python dicts.
+    Methods that take a bet or a stake as a parameters also rely on this.
+    Generally, they assume that bet/stakes was returned by another API call,
+    e.g. by get_active_bets().
+    '''
 
     DEFAULT_SETTINGS = {
         'bets_url': u'http://bets.42cc.co',
@@ -50,12 +62,16 @@ class BetsApi(object):
         return json
 
     def get_active_bets(self):
+        '''Returns all active bets'''
         url = urljoin(
             self.settings['bets_url'],
             'bets?state=fresh,active,accept_end')
         return self._req(url)['bets']['results']
 
     def get_project_slug(self, bet):
+        '''Return slug of a project that given bet is associated with
+        or None if bet is not associated with any project.
+        '''
         if bet.get('form_params'):
             params = json.loads(bet['form_params'])
             return params.get('project')
@@ -78,7 +94,9 @@ class BetsApi(object):
         return result
 
     def stakes_in(self, bet):
+        '''Return all stakes on 'in' side for given bet.'''
         return self._stakes_by_side(bet, 'in')
 
     def stakes_out(self, bet):
+        '''Return all stakes on 'out' side for given bet.'''
         return self._stakes_by_side(bet, 'out')
