@@ -3,12 +3,18 @@ import json
 import datetime as dt
 from urlparse import urljoin
 from decimal import Decimal
+from collections import defaultdict
 
+import gevent
 import requests
 
 
 class ApiError(Exception):
     pass
+
+
+class Event(object):
+    BET_EXECUTED = 'bet_executed'
 
 
 class BetsApi(object):
@@ -41,6 +47,9 @@ class BetsApi(object):
         self.settings = self.DEFAULT_SETTINGS.copy()
         self.settings['token'] = token
 
+        self._callbacks = {}
+        self._subscriptions = defaultdict(set)
+
     def _token_header(self):
         return {'Authorization': 'Token %s' % self.settings['token']}
 
@@ -57,8 +66,8 @@ class BetsApi(object):
             json = r.json()
         except ValueError:
             raise ApiError('Received not JSON response from API')
-        if json['status'] != 'ok':
-            raise ApiError('API error: %s' % json['status'])
+        if json.get('status') != 'ok':
+            raise ApiError('API error: %s' % json.get('status'))
         return json
 
     def get_active_bets(self):
@@ -100,3 +109,43 @@ class BetsApi(object):
     def stakes_out(self, bet):
         '''Return all stakes on 'out' side for given bet.'''
         return self._stakes_by_side(bet, 'out')
+
+    def get_bets_by_ids(self, ids):
+        ids = map(str, ids)
+        url = urljoin(
+            self.settings['bets_url'],
+            'bets?id=%s' % ','.join(ids))
+        return self._req(url)['bets']['results']
+
+    def set_callback(self, event, callback):
+        '''Set callback for event.
+
+        Supported events: see `Event` class.
+
+        Callback must take one parameter, which is a bet that changed.
+
+        If callback is already set, it will be reset to a new value.
+        '''
+        self._callbacks[event] = callback
+
+    def subscribe(self, event, bet_ids):
+        '''Subscribe to event for given bet ids.'''
+        if not self._subscriptions.get(event):
+            self._subscriptions[event] = set()
+        self._subscriptions[event] = self._subscriptions[event].union(bet_ids)
+
+    def event_loop(self):
+        '''Look for changes in bets, that user subscribed to by self.subscribe
+        and trigger corresponding callbacks.
+        '''
+        return [gevent.spawn(self._poll_bet_executed)]
+
+    def _poll_bet_executed(self):
+        while True:
+            bets = self.get_bets_by_ids(self._subscriptions[Event.BET_EXECUTED])
+            executed_bets = [b for b in bets if b['state'] == 'executed']
+            self._subscriptions[Event.BET_EXECUTED] -= set([b['id'] for b in executed_bets])
+            callback = self._callbacks.get(Event.BET_EXECUTED)
+            if callback:
+                gevent.joinall([gevent.spawn(callback, b) for b in executed_bets])
+            gevent.sleep(10)
