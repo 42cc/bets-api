@@ -1,5 +1,7 @@
 __version__ = '0.0.1'
 
+from gevent import monkey; monkey.patch_socket()
+
 import re
 import json
 import datetime as dt
