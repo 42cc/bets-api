@@ -71,7 +71,7 @@ class BetsApi(object):
         except ValueError:
             raise ApiError('Received not JSON response from API')
         if json.get('status') != 'ok':
-            raise ApiError('API error: %s' % json.get('status'))
+            raise ApiError('API error: received unexpected json from API: %s' % json)
         return json
 
     def get_active_bets(self):
@@ -146,7 +146,14 @@ class BetsApi(object):
 
     def _poll_bet_executed(self):
         while True:
-            bets = self.get_bets_by_ids(self._subscriptions[Event.BET_EXECUTED])
+            if not self._subscriptions.get(Event.BET_EXECUTED):
+                gevent.sleep(10)
+                continue
+            try:
+                bets = self.get_bets_by_ids(self._subscriptions[Event.BET_EXECUTED])
+            except ApiError as e:
+                print '[ERROR] %s' % e
+                continue
             executed_bets = [b for b in bets if b['state'] == 'executed']
             self._subscriptions[Event.BET_EXECUTED] -= set([b['id'] for b in executed_bets])
             callback = self._callbacks.get(Event.BET_EXECUTED)

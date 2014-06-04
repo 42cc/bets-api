@@ -14,7 +14,7 @@ def subscribe_active():
         try:
             result = api.get_active_bets()
         except bets.ApiError as e:
-            print 'Error %s' % e
+            print '[ERROR] %s' % e
             continue
         bet_ids = [b['id'] for b in result]
         api.subscribe(bets.Event.BET_EXECUTED, bet_ids)
