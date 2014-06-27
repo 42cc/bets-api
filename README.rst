@@ -24,7 +24,7 @@ Basic Usage
     api.get_project_slug(bets[13])
     # => u'favim'
 
-    api.stakes_in(bet[13])
+    api.stakes_in(bets[13])
     # => {'stakes': [{u'amount': Decimal('0.20000'),
     #      u'created': datetime.datetime(2014, 6, 2, 13, 36, 4, 322000),
     #      u'id': 3565,
