@@ -178,6 +178,17 @@ class BetsApi(object):
         }
         return self._create(url, data, expires_at, bets_until, min_stake)
 
+    def create_closed_tickets(self, project_slug, expires_at, ticket_nums,
+                              bets_until=None, min_stake=None):
+        url = 'bet/create/closed_tickets'
+        if not isinstance(ticket_nums, list):
+            ticket_nums = [ticket_nums]
+        data = {
+            'project': project_slug,
+            'tickets': ','.join(map(str, ticket_nums)),
+        }
+        return self._create(url, data, expires_at, bets_until, min_stake)
+
     def set_callback(self, event, callback):
         '''Set callback for event.
 
