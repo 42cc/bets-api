@@ -28,7 +28,7 @@ Basic Usage
     # => {'stakes': [{u'amount': Decimal('0.20000'),
     #      u'created': datetime.datetime(2014, 6, 2, 13, 36, 4, 322000),
     #      u'id': 3565,
-    #      u'side': u'in',
+    #      u'side': 0,
     #      u'user': u'username'}],
     #    'sum': Decimal('0.20000')}
 
