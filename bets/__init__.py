@@ -47,6 +47,9 @@ class BetsApi(object):
         'closed_tickets',
     ]
 
+    SIDE_IN = 0
+    SIDE_OUT = 1
+
     def __init__(self, token):
         self.settings = self.DEFAULT_SETTINGS.copy()
         self.settings['token'] = token
@@ -108,11 +111,11 @@ class BetsApi(object):
 
     def stakes_in(self, bet):
         '''Return all stakes on 'in' side for given bet.'''
-        return self._stakes_by_side(bet, 'in')
+        return self._stakes_by_side(bet, self.SIDE_IN)
 
     def stakes_out(self, bet):
         '''Return all stakes on 'out' side for given bet.'''
-        return self._stakes_by_side(bet, 'out')
+        return self._stakes_by_side(bet, self.SIDE_OUT)
 
     def get_bets_by_ids(self, ids):
         ids = map(str, ids)
