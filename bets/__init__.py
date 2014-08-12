@@ -128,17 +128,29 @@ class BetsApi(object):
             'bets?id=%s' % ','.join(ids))
         return self._req(url)['bets']['results']
 
-    def create_no_bugs(self, project_slug, expires_at, bets_until=None, min_stake=None):
-        url = urljoin(self.settings['bets_url'], 'bet/create/no-bugs')
-        data = {
-            'project': project_slug,
-            'expires': expires_at.strftime(self.TIME_FMT),
-        }
+    def _create(self, url, data, expires_at, bets_until=None, min_stake=None):
+        url = urljoin(self.settings['bets_url'], url)
+        data = data.copy()
+        data['expires'] = expires_at.strftime(self.TIME_FMT)
         if bets_until is not None:
             data['stakes_acception_end'] = bets_until.strftime(self.TIME_FMT)
         if min_stake is not None:
             data['min_in'], data['min_out'] = min_stake
         return self._req(url, 'POST', data=data)
+
+    def create_no_bugs(self, project_slug, expires_at, bets_until=None, min_stake=None):
+        url = 'bet/create/no-bugs'
+        data = {'project': project_slug}
+        return self._create(url, data, expires_at, bets_until, min_stake)
+
+    def create_budget(self, project_slug, expires_at, target_budget,
+                      bets_until=None, min_stake=None):
+        url = 'bet/create/budget'
+        data = {
+            'project': project_slug,
+            'goal': target_budget,
+        }
+        return self._create(url, data, expires_at, bets_until, min_stake)
 
     def set_callback(self, event, callback):
         '''Set callback for event.
