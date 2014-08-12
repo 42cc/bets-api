@@ -198,6 +198,24 @@ class BetsApi(object):
         }
         return self._create(url, data, expires_at, bets_until, min_stake)
 
+    def create_fitting_deadline(self, percent, expires_at, days=90,
+                                bets_until=None, min_stake=None):
+        url = 'bet/create/fitting_deadline'
+        data = {
+            'percent': percent,
+            'last_N_days': days,
+        }
+        return self._create(url, data, expires_at, bets_until, min_stake)
+
+    def create_without_defects(self, percent, expires_at, days=90,
+                               bets_until=None, min_stake=None):
+        url = 'bet/create/without_defects'
+        data = {
+            'percent': percent,
+            'last_N_days': days,
+        }
+        return self._create(url, data, expires_at, bets_until, min_stake)
+
     def set_callback(self, event, callback):
         '''Set callback for event.
 
