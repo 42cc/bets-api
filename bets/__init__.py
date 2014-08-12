@@ -136,7 +136,11 @@ class BetsApi(object):
         if bets_until is not None:
             data['stakes_acception_end'] = bets_until.strftime(self.TIME_FMT)
         if min_stake is not None:
-            data['min_in'], data['min_out'] = min_stake
+            if len(min_stake) == 2:
+                data['min_in'], data['min_out'] = min_stake
+            elif len(min_stake) == 6:
+                (data['less_1cp'], data['equal_1cp'], data['equal_2cp'],
+                 data['equal_3cp'], data['equal_4cp'], data['more_4cp']) = min_stake
         return self._req(url, 'POST', data=data)
 
     def create_no_bugs(self, project_slug, expires_at, bets_until=None, min_stake=None):
@@ -213,6 +217,15 @@ class BetsApi(object):
         data = {
             'percent': percent,
             'last_N_days': days,
+        }
+        return self._create(url, data, expires_at, bets_until, min_stake)
+
+    def create_estimate_ticket(self, project_slug, expires_at, ticket_num,
+                               bets_until=None, min_stake=None):
+        url = 'bet/create/estimate_ticket'
+        data = {
+            'project': project_slug,
+            'ticket': ticket_num,
         }
         return self._create(url, data, expires_at, bets_until, min_stake)
 
