@@ -167,6 +167,17 @@ class BetsApi(object):
         data = {'description': description}
         return self._create(url, data, expires_at, bets_until, min_stake)
 
+    def create_billable_hours(self, kava_username, expires_at, hours, start_date, end_date,
+                              bets_until=None, min_stake=None):
+        url = 'bet/create/billable'
+        data = {
+            'user': kava_username,
+            'goal': hours,
+            'start_date': start_date.strftime(self.DATE_FMT),
+            'end_date': end_date.strftime(self.DATE_FMT),
+        }
+        return self._create(url, data, expires_at, bets_until, min_stake)
+
     def set_callback(self, event, callback):
         '''Set callback for event.
 
