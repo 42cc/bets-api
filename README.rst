@@ -36,6 +36,33 @@ Basic Usage
     # => {'stakes': [], 'sum': 0}
 
 
+Creating bets
+=============
+
+.. code-block:: python
+
+    api.create_budget(project_slug, expires_at, target_budget, bets_until, min_stake)
+    # => {u'bet_id': 26, u'status': u'ok'}
+
+expires_at, bets_until - must be datetime objects
+bets_until, min_stake - not required
+
+Also, there are methods for creating other types of bets:
+
+.. code-block:: python
+
+    create_no_bugs(self, project_slug, expires_at, bets_until=None, min_stake=None):
+    create_budget(self, project_slug, expires_at, target_budget, bets_until=None, min_stake=None):
+    create_deadline(self, project_slug, expires_at, target_deadline, bets_until=None, min_stake=None):
+    create_human(self, description, expires_at, bets_until=None, min_stake=None):
+    create_billable_hours(self, kava_username, expires_at, hours, start_date, end_date, bets_until=None, min_stake=None):
+    create_closed_tickets(self, project_slug, expires_at, ticket_nums, bets_until=None, min_stake=None):
+    create_fitting_budget(self, percent, expires_at, days=90, bets_until=None, min_stake=None):
+    create_fitting_deadline(self, percent, expires_at, days=90, bets_until=None, min_stake=None):
+    create_without_defects(self, percent, expires_at, days=90, bets_until=None, min_stake=None):
+    create_estimate_ticket(self, project_slug, expires_at, ticket_num, bets_until=None, min_stake=None):
+
+
 Subscribe to Event.BET_EXPIRED
 ==============================
 
