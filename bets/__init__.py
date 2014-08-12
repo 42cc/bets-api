@@ -48,6 +48,7 @@ class BetsApi(object):
     ]
 
     TIME_FMT = '%Y-%m-%d %H:%M'
+    DATE_FMT = '%Y-%m-%d'
 
     SIDE_IN = 0
     SIDE_OUT = 1
@@ -149,6 +150,15 @@ class BetsApi(object):
         data = {
             'project': project_slug,
             'goal': target_budget,
+        }
+        return self._create(url, data, expires_at, bets_until, min_stake)
+
+    def create_deadline(self, project_slug, expires_at, target_deadline,
+                        bets_until=None, min_stake=None):
+        url = 'bet/create/deadline'
+        data = {
+            'project': project_slug,
+            'goal': target_deadline.strftime(self.DATE_FMT),
         }
         return self._create(url, data, expires_at, bets_until, min_stake)
 
