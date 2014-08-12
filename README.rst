@@ -5,7 +5,7 @@ Bets API client
 Installation
 ============
 
-    pip install bets-api==0.0.2
+    pip install bets-api==0.0.3
 
 Basic Usage
 ===========
@@ -44,8 +44,8 @@ Creating bets
     api.create_budget(project_slug, expires_at, target_budget, bets_until, min_stake)
     # => {u'bet_id': 26, u'status': u'ok'}
 
-expires_at, bets_until - must be datetime objects
-bets_until, min_stake - not required
+- `expires_at`, `bets_until` - must be datetime objects
+- `bets_until`, `min_stake` - not required
 
 Also, there are methods for creating other types of bets:
 
