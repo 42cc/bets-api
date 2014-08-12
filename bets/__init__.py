@@ -162,6 +162,11 @@ class BetsApi(object):
         }
         return self._create(url, data, expires_at, bets_until, min_stake)
 
+    def create_human(self, description, expires_at, bets_until=None, min_stake=None):
+        url = 'bet/create/human'
+        data = {'description': description}
+        return self._create(url, data, expires_at, bets_until, min_stake)
+
     def set_callback(self, event, callback):
         '''Set callback for event.
 
