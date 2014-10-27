@@ -36,8 +36,8 @@ class BetsApi(object):
     '''
 
     DEFAULT_SETTINGS = {
-        'bets_url': u'http://bets.42cc.co',
-        'timeout': 5,  # seconds
+        'bets_url': u'http://bets.42cc.co/v1.1.0/',
+        'timeout': 30,  # seconds
     }
 
     bet_types_with_project = [
@@ -86,8 +86,17 @@ class BetsApi(object):
         '''Returns all active bets'''
         url = urljoin(
             self.settings['bets_url'],
-            'bets?state=fresh,active,accept_end')
-        return self._req(url)['bets']['results']
+            'bets?state=fresh,active,accept_end&page=1&page_size=100')
+
+        bets = []
+        has_next_page = True
+        while has_next_page:
+            res = self._req(url)
+            bets.extend(res['bets']['results'])
+            url = res['bets'].get('next')
+            has_next_page = bool(url)
+
+        return bets
 
     def get_project_slug(self, bet):
         '''Return slug of a project that given bet is associated with
