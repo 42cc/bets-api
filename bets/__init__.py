@@ -1,4 +1,4 @@
-__version__ = '0.0.4'
+__version__ = '0.0.5'
 
 from gevent import monkey; monkey.patch_socket()
 
