@@ -36,7 +36,7 @@ class BetsApi(object):
     '''
 
     DEFAULT_SETTINGS = {
-        'bets_url': u'http://bets.42cc.co/v1.1.0/',
+        'bets_url': u'http://bets.42cc.co/v1.1.1/',
         'timeout': 30,  # seconds
     }
 
@@ -82,11 +82,14 @@ class BetsApi(object):
             raise ApiError('API error: received unexpected json from API: %s' % json)
         return json
 
-    def get_active_bets(self):
+    def get_active_bets(self, project_id=None):
         '''Returns all active bets'''
         url = urljoin(
             self.settings['bets_url'],
             'bets?state=fresh,active,accept_end&page=1&page_size=100')
+
+        if project_id is not None:
+            url += '&kava_project_id={}'.format(project_id)
 
         bets = []
         has_next_page = True
