@@ -21,6 +21,10 @@ Basic Usage
     bets[13]
     # => {...} dict that represents the bet
 
+    bets = api.get_active_bets(project_id=123)  # list of active bets filtered by project id
+    len(bets)
+    # => 20
+
     api.get_project_slug(bets[13])
     # => u'favim'
 
