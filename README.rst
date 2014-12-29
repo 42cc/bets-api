@@ -5,7 +5,7 @@ Bets API client
 Installation
 ============
 
-    pip install bets-api==0.0.5
+    pip install bets-api==0.0.6
 
 Basic Usage
 ===========
