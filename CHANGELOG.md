@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.0.6
+
+- bugfix: gevent.monkey causes https requests to fail under certain
+circumstances while doing SSL handshake
+
 ## 0.0.5
 
 - uses server API v1.1.1

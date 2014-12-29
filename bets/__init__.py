@@ -1,6 +1,9 @@
-__version__ = '0.0.5'
+__version__ = '0.0.6'
 
-from gevent import monkey; monkey.patch_socket()
+from gevent import monkey
+monkey.patch_socket()
+monkey.patch_ssl()
+monkey.patch_time()
 
 import re
 import json
