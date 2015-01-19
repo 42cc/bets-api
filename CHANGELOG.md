@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.0.7
+
+- use API v1.1.3
+- increase default timeout to 60 secs
+- add method for creating "commit bug" bets (`create_commit_bugs`)
+
 ## 0.0.6
 
 - bugfix: gevent.monkey causes https requests to fail under certain
