@@ -39,8 +39,8 @@ class BetsApi(object):
     '''
 
     DEFAULT_SETTINGS = {
-        'bets_url': u'http://bets.42cc.co/v1.1.1/',
-        'timeout': 30,  # seconds
+        'bets_url': u'http://bets.42cc.co/v1.1.3/',
+        'timeout': 60,  # seconds
     }
 
     bet_types_with_project = [
@@ -161,6 +161,15 @@ class BetsApi(object):
     def create_no_bugs(self, project_slug, expires_at, bets_until=None, min_stake=None):
         url = 'bet/create/no-bugs'
         data = {'project': project_slug}
+        return self._create(url, data, expires_at, bets_until, min_stake)
+
+    def create_commit_bugs(self, project_slug, commit_hash, expires_at, 
+                           bets_until=None, min_stake=None):
+        url = 'bet/create/commit_bug'
+        data = {
+            'project': project_slug,
+            'commit_hash': commit_hash,
+        }
         return self._create(url, data, expires_at, bets_until, min_stake)
 
     def create_budget(self, project_slug, expires_at, target_budget,
