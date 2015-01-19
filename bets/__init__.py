@@ -163,7 +163,8 @@ class BetsApi(object):
         data = {'project': project_slug}
         return self._create(url, data, expires_at, bets_until, min_stake)
 
-    def create_commit_bugs(self, project_slug, commit_hash, expires_at, bets_until=None, min_stake=None):
+    def create_commit_bugs(self, project_slug, commit_hash, expires_at, 
+                           bets_until=None, min_stake=None):
         url = 'bet/create/commit_bug'
         data = {
             'project': project_slug,
