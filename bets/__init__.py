@@ -39,8 +39,8 @@ class BetsApi(object):
     '''
 
     DEFAULT_SETTINGS = {
-        'bets_url': u'http://bets.42cc.co/v1.1.1/',
-        'timeout': 30,  # seconds
+        'bets_url': u'http://bets.42cc.co/v1.1.3/',
+        'timeout': 60,  # seconds
     }
 
     bet_types_with_project = [
