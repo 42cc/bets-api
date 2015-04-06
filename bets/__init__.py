@@ -165,7 +165,7 @@ class BetsApi(object):
                        min_stake=None, group=None):
         url = 'bet/create/no-bugs'
         data = {'project': project_slug}
-        return self._create(url, data, group, expires_at, bets_until, min_stake)
+        return self._create(url, data, expires_at, bets_until, min_stake, group)
 
     def create_commit_bugs(self, project_slug, commit_hash, expires_at,
                            bets_until=None, min_stake=None, group=None):
@@ -174,7 +174,7 @@ class BetsApi(object):
             'project': project_slug,
             'commit_hash': commit_hash,
         }
-        return self._create(url, data, group, expires_at, bets_until, min_stake)
+        return self._create(url, data, expires_at, bets_until, min_stake, group)
 
     def create_budget(self, project_slug, expires_at, target_budget,
                       bets_until=None, min_stake=None, group=None):
@@ -183,7 +183,7 @@ class BetsApi(object):
             'project': project_slug,
             'goal': target_budget,
         }
-        return self._create(url, data, group, expires_at, bets_until, min_stake)
+        return self._create(url, data, expires_at, bets_until, min_stake, group)
 
     def create_deadline(self, project_slug, expires_at, target_deadline,
                         bets_until=None, min_stake=None, group=None):
@@ -192,13 +192,13 @@ class BetsApi(object):
             'project': project_slug,
             'goal': target_deadline.strftime(self.DATE_FMT),
         }
-        return self._create(url, data, group, expires_at, bets_until, min_stake)
+        return self._create(url, data, expires_at, bets_until, min_stake, group)
 
     def create_human(self, description, expires_at, bets_until=None,
                      min_stake=None, group=None):
         url = 'bet/create/human'
         data = {'description': description}
-        return self._create(url, data, group, expires_at, bets_until, min_stake)
+        return self._create(url, data, expires_at, bets_until, min_stake, group)
 
     def create_billable_hours(self, kava_username, expires_at, hours, start_date, end_date,
                               bets_until=None, min_stake=None, group=None):
@@ -209,7 +209,7 @@ class BetsApi(object):
             'start_date': start_date.strftime(self.DATE_FMT),
             'end_date': end_date.strftime(self.DATE_FMT),
         }
-        return self._create(url, data, group, expires_at, bets_until, min_stake)
+        return self._create(url, data, expires_at, bets_until, min_stake, group)
 
     def create_closed_tickets(self, project_slug, expires_at, ticket_nums,
                               bets_until=None, min_stake=None, group=None):
@@ -220,7 +220,7 @@ class BetsApi(object):
             'project': project_slug,
             'tickets': ','.join(map(str, ticket_nums)),
         }
-        return self._create(url, data, group, expires_at, bets_until, min_stake)
+        return self._create(url, data, expires_at, bets_until, min_stake, group)
 
     def create_fitting_budget(self, percent, expires_at, days=90,
                               bets_until=None, min_stake=None, group=None):
@@ -229,7 +229,7 @@ class BetsApi(object):
             'percent': percent,
             'last_N_days': days,
         }
-        return self._create(url, data, group, expires_at, bets_until, min_stake)
+        return self._create(url, data, expires_at, bets_until, min_stake, group)
 
     def create_fitting_deadline(self, percent, expires_at, days=90,
                                 bets_until=None, min_stake=None, group=None):
@@ -238,7 +238,7 @@ class BetsApi(object):
             'percent': percent,
             'last_N_days': days,
         }
-        return self._create(url, data, group, expires_at, bets_until, min_stake)
+        return self._create(url, data, expires_at, bets_until, min_stake, group)
 
     def create_without_defects(self, percent, expires_at, days=90,
                                bets_until=None, min_stake=None, group=None):
@@ -247,7 +247,7 @@ class BetsApi(object):
             'percent': percent,
             'last_N_days': days,
         }
-        return self._create(url, data, group, expires_at, bets_until, min_stake)
+        return self._create(url, data, expires_at, bets_until, min_stake, group)
 
     def create_estimate_ticket(self, project_slug, expires_at, ticket_num,
                                bets_until=None, min_stake=None, group=None):
@@ -256,7 +256,7 @@ class BetsApi(object):
             'project': project_slug,
             'ticket': ticket_num,
         }
-        return self._create(url, data, group, expires_at, bets_until, min_stake)
+        return self._create(url, data, expires_at, bets_until, min_stake, group)
 
     def set_callback(self, event, callback):
         '''Set callback for event.
