@@ -25,6 +25,9 @@ Basic Usage
     len(bets)
     # => 20
 
+    # see docstrings for more on available parameters
+    api.get_bets(type='estimate_ticket', order_by='-last_stake', state='active', page_size=10)
+
     api.get_project_slug(bets[13])
     # => u'favim'
 

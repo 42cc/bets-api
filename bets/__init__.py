@@ -43,12 +43,8 @@ class BetsApi(object):
         'timeout': 60,  # seconds
     }
 
-    bet_types_with_project = [
-        'budget',
-        'deadline',
-        '0_bugs',
-        'closed_tickets',
-    ]
+    ACTIVE_STATES = ['fresh', 'active', 'accept_end']
+    CLOSED_STATES = ['closed', 'executed', 'calculated', 'returned']
 
     TIME_FMT = '%Y-%m-%d %H:%M'
     DATE_FMT = '%Y-%m-%d'
@@ -103,6 +99,40 @@ class BetsApi(object):
             has_next_page = bool(url)
 
         return bets
+
+    def get_bets(self, type=None, order_by=None, state=None, page=None, page_size=None):
+        """Return bets with given filters and ordering.
+
+        :param type: return bets only with this type.
+                     Use None to include all (default).
+        :param order_by: '-last_stake' or 'last_stake' to sort by stake's
+                         created date or None for default ordering.
+        :param state: one of 'active', 'closed', 'all' (default 'active').
+        :param page: default 1.
+        :param page_site: page size (default 100).
+        """
+        if page is None:
+            page = 1
+        if page_size is None:
+            page_size = 100
+        if state == 'all':
+            _states = []  # all states == no filter
+        elif state == 'closed':
+            _states = self.CLOSED_STATES
+        else:
+            _states = self.ACTIVE_STATES
+
+        url = urljoin(
+            self.settings['bets_url'],
+            'bets?page={}&page_size={}'.format(page, page_size))
+        url += '&state={}'.format(','.join(_states))
+        if type is not None:
+            url += '&type={}'.format(type)
+        if order_by in ['-last_stake', 'last_stake']:
+            url += '&order_by={}'.format(order_by)
+
+        res = self._req(url)
+        return res['bets']['results']
 
     def get_project_slug(self, bet):
         '''Return slug of a project that given bet is associated with
