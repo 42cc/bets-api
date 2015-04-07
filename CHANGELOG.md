@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.0.8
+
+- add `get_bets` method (filtering by type, state & ordering by recent stakes
+  support)
+
 ## 0.0.7
 
 - use API v1.1.3
