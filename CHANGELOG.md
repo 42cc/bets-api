@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.0.9
+
+- add support for `project_id` parameter to `get_bets` method to allow filtering
+  by project id in kava
+
 ## 0.0.8
 
 - add `get_bets` method (filtering by type, state & ordering by recent stakes
