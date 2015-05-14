@@ -100,7 +100,8 @@ class BetsApi(object):
 
         return bets
 
-    def get_bets(self, type=None, order_by=None, state=None, page=None, page_size=None):
+    def get_bets(self, type=None, order_by=None, state=None, project_id=None,
+                 page=None, page_size=None):
         """Return bets with given filters and ordering.
 
         :param type: return bets only with this type.
@@ -108,6 +109,7 @@ class BetsApi(object):
         :param order_by: '-last_stake' or 'last_stake' to sort by stake's
                          created date or None for default ordering.
         :param state: one of 'active', 'closed', 'all' (default 'active').
+        :param project_id: return bets associated with given project id in kava
         :param page: default 1.
         :param page_site: page size (default 100).
         """
@@ -130,6 +132,8 @@ class BetsApi(object):
             url += '&type={}'.format(type)
         if order_by in ['-last_stake', 'last_stake']:
             url += '&order_by={}'.format(order_by)
+        if project_id is not None:
+            url += '&kava_project_id={}'.format(project_id)
 
         res = self._req(url)
         return res['bets']['results']
