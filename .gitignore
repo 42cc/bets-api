@@ -21,3 +21,6 @@ build
 
 settings_local.py
 bet_engine/static_root
+
+# Editors
+.idea
