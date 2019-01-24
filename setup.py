@@ -18,7 +18,7 @@ setup(
     requires=['python (>= 2.7)', ],
     install_requires=[
         'gevent >= 1.0.1',
-        'requests >= 2.2.1',
+        'requests >= 2.6.0',
     ],
     tests_require=[],
     description='A wrapper over bets.42cc.co API',
